@@ -26,7 +26,17 @@ function switchChannel(channelName) {
 
 /* #6 #liking a channel on #click */
 function star() {
-    $('#channel-star').attr('src', 'http://ip.lfe.mw.tum.de/sections/star.png');
+    // Should I use toggleClass();
+  //  $('#channel-star').attr('src', 'http://ip.lfe.mw.tum.de/sections/star.png');
+    if ($('#channel-star').attr("class").indexOf('fas') !== -1) {
+        /*found*/
+        $('#channel-star').removeClass('fas');
+        $('#channel-star').addClass('far');
+    } else {
+        /* not found*/
+        $('#channel-star').removeClass('far');
+        $('#channel-star').addClass('fas');
+    }
 }
 
 /**
