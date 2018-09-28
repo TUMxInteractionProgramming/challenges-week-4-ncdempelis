@@ -1,6 +1,11 @@
 /* #6 start the #external #action and say hello */
 console.log("App is alive");
-
+var currentChannel = SevenContinents;
+var currentLocation = {
+    longitude: '38.161780',
+    latitude: '21.700405',
+    what3words: 'unknown.location.this'
+};
 /**
  * #6 #Switcher function for the #channels name in the right app bar
  * @param channelName Text which is set
@@ -8,35 +13,38 @@ console.log("App is alive");
 function switchChannel(channelName) {
     //Log the channel switch
     console.log("Tuning in to channel", channelName);
+    currentChannel = channelName;
 
     //Write the new channel to the right app bar
-    document.getElementById('channel-name').innerHTML = channelName;
+    document.getElementById('channel-name').innerHTML = channelName.name;
 
     //#6 change the #channel #location
-    document.getElementById('channel-location').innerHTML = 'by <a href="http://w3w.co/upgrading.never.helps" target="_blank"><strong>upgrading.never.helps</strong></a>';
+    document.getElementById('channel-location').innerHTML = 'by <a href="http://w3w.co/'+ channelName.createdBy+'" target="_blank"><strong>'+channelName.createdBy+'</strong></a>';
 
     /* #6 #liking channels on #click */
-    $('#channel-star').attr('src', 'http://ip.lfe.mw.tum.de/sections/star-o.png');
+    $('#channel-star').removeClass('fas');
+    $('#channel-star').removeClass('far');
+    $('#channel-star').addClass( (channelName.starred )?("fas"):("far") );
 
     /* #6 #highlight the selected #channel.
        This is inefficient (jQuery has to search all channel list items), but we'll change it later on */
     $('#channels li').removeClass('selected');
-    $('#channels li:contains(' + channelName + ')').addClass('selected');
+    $('#channels li:contains(' + channelName.name + ')').addClass('selected'); //fix this
+    
 }
 
 /* #6 #liking a channel on #click */
 function star() {
-    // Should I use toggleClass();
-  //  $('#channel-star').attr('src', 'http://ip.lfe.mw.tum.de/sections/star.png');
-    if ($('#channel-star').attr("class").indexOf('fas') !== -1) {
-        /*found*/
-        $('#channel-star').removeClass('fas');
-        $('#channel-star').addClass('far');
-    } else {
-        /* not found*/
-        $('#channel-star').removeClass('far');
-        $('#channel-star').addClass('fas');
+    $('#channel-star').toggleClass('fas far');
+    
+    currentChannel.starred = !(currentChannel.starred);
+    for (i = 0; i < $('li').length; i++){
+        if ($('li')[i].innerHTML.indexOf(currentChannel.name) != -1) {
+            break;
+        }
     }
+    i +=1; // css rule of nth-child
+    $('li:nth-child(' + i + ') i:nth-child(1)').toggleClass('fas far');
 }
 
 /**
